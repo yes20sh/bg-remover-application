@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IMAGE BG REMOVER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts for Retro Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@900&family=VT323&family=Monoton&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --neon-pink: #ff2a6d;
+            --neon-blue: #05d9e8;
+            --neon-purple: #d300c5;
+            --neon-green: #00ff9d;
+            --matrix-green: #0f0;
+            --retro-dark: #0d0221;
+        }
+        
+        body {
+            background-color: var(--retro-dark);
+            background-image: 
+                linear-gradient(rgba(5, 217, 232, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(5, 217, 232, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--neon-blue);
+            font-family: 'VT323', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .retro-press { font-family: 'Press Start 2P', cursive; }
+        .retro-orbitron { font-family: 'Orbitron', sans-serif; font-weight: 900; }
+        .retro-vt323 { font-family: 'VT323', monospace; }
+        .retro-monoton { font-family: 'Monoton', cursive; }
+        
+        .retro-box {
+            background: rgba(13, 2, 33, 0.8);
+            border: 2px solid var(--neon-pink);
+            box-shadow: 
+                0 0 10px var(--neon-pink),
+                0 0 20px var(--neon-purple),
+                inset 0 0 10px var(--neon-pink);
+            border-radius: 0;
+        }
+        
+        .retro-button {
+            background: var(--retro-dark);
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 8px 16px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px var(--neon-blue);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .retro-button:hover {
+            background: var(--neon-blue);
+            color: var(--retro-dark);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+        
+        .retro-button:active {
+            transform: translateY(2px);
+        }
+        
+        .retro-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(5, 217, 232, 0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .retro-button:hover::before {
+            left: 100%;
+        }
+        
+        .retro-input {
+            background: rgba(13, 2, 33, 0.8);
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 8px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+        }
+        
+        .retro-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--neon-green);
+            border-color: var(--neon-green);
+        }
+        
+        .retro-slider {
+            -webkit-appearance: none;
+            height: 8px;
+            background: var(--retro-dark);
+            border: 2px solid var(--neon-purple);
+            outline: none;
+        }
+        
+        .retro-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-purple);
+            cursor: pointer;
+            box-shadow: 0 0 5px var(--neon-purple);
+        }
+        
+        .retro-title {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 
+                0 0 5px var(--neon-blue),
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-blue);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .retro-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue), var(--neon-purple));
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .retro-section-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .retro-section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-green), transparent);
+        }
+        
+        .retro-checkbox {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neon-blue);
+            background: transparent;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .retro-checkbox:checked {
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .retro-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            color: var(--retro-dark);
+            font-size: 16px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .retro-select {
+            background: var(--retro-dark);
+            border: 2px solid var(--neon-pink);
+            color: var(--neon-pink);
+            padding: 8px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+        }
+        
+        .retro-select:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .pixel-corner {
+            position: relative;
+        }
+        
+        .pixel-corner::before, .pixel-corner::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--neon-blue);
+        }
+        
+        .pixel-corner::before {
+            top: -5px;
+            left: -5px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .pixel-corner::after {
+            bottom: -5px;
+            right: -5px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .pixel-grid {
+            background-image: 
+                linear-gradient(rgba(5, 217, 232, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(5, 217, 232, 0.3) 1px, transparent 1px);
+            background-size: 10px 10px;
+        }
+        
+        .error-message {
+            background: rgba(255, 42, 109, 0.2);
+            border: 2px solid var(--neon-pink);
+            color: var(--neon-pink);
+            padding: 12px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .success-message {
+            background: rgba(0, 255, 157, 0.2);
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 12px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        .canvas-container {
+            background: rgba(13, 2, 33, 0.5);
+            border: 2px dashed var(--neon-purple);
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .canvas-container::before {
+            content: 'PREVIEW AREA';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(5, 217, 232, 0.3);
+            font-size: 2rem;
+            font-family: 'Orbitron', sans-serif;
+            z-index: 0;
+        }
+        
+        canvas {
+            max-width: 100%;
+            max-height: 400px;
+            position: relative;
+            z-index: 1;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+        
+        .loading {
+            position: relative;
+            color: transparent;
+        }
+        
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--neon-blue);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        .file-upload input {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 10px 20px;
+            background: var(--retro-dark);
+            color: var(--neon-green);
+            text-align: center;
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload-label:hover {
+            background: var(--neon-green);
+            color: var(--retro-dark);
+        }
+        
+        .bg-option {
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bg-option::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .bg-option:hover::after {
+            left: 100%;
+        }
+        
+        .active-bg {
+            box-shadow: 0 0 15px currentColor;
+            transform: translateY(-2px);
+        }
+        
+        .pixel-loader {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        
+        .pixel-loader div {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--neon-pink);
+            animation: pixel-load 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+        }
+        
+        .pixel-loader div:nth-child(1) {
+            left: 8px;
+            animation-delay: -0.24s;
+        }
+        
+        .pixel-loader div:nth-child(2) {
+            left: 32px;
+            animation-delay: -0.12s;
+        }
+        
+        .pixel-loader div:nth-child(3) {
+            left: 56px;
+            animation-delay: 0;
+        }
+        
+        @keyframes pixel-load {
+            0% {
+                top: 8px;
+                height: 64px;
+                background: var(--neon-pink);
+                box-shadow: 0 0 10px var(--neon-pink);
+            }
+            50%, 100% {
+                top: 24px;
+                height: 32px;
+                background: var(--neon-blue);
+                box-shadow: 0 0 15px var(--neon-blue);
+            }
+        }
+        
+        /* CRT screen effect */
+        .crt-effect::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0.15;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+        }
+        
+        .crt-effect {
+            position: relative;
+        }
+        
+        .crt-effect::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.03) 3%,
+                rgba(255,255,255,0.06) 6%,
+                rgba(255,255,255,0.03) 9%,
+                rgba(255,255,255,0) 12%
+            );
+            z-index: 2;
+            pointer-events: none;
+            animation: scanlines 0.5s linear infinite;
+        }
+        
+        @keyframes scanlines {
+            from { background-position: 0 0; }
+            to { background-position: 0 8px; }
+        }
+    </style>
+</head>
+<body class="p-4 crt-effect">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Title with animated border -->
+        <div class="text-center mb-12 relative">
+            <h1 class="retro-title text-4xl md:text-5xl mb-4">IMAGE BG REMOVER</h1>
+            <div class="flex justify-center">
+                <div class="h-1 w-32 bg-gradient-to-r from-transparent via-var(--neon-pink) to-transparent"></div>
+                <div class="h-1 w-32 bg-gradient-to-r from-transparent via-var(--neon-blue) to-transparent"></div>
+                <div class="h-1 w-32 bg-gradient-to-r from-transparent via-var(--neon-purple) to-transparent"></div>
+            </div>
+            <div class="text-xs mt-2 text-var(--neon-blue) font-mono">VERSION 1.0.0</div>
+        </div>
+        
+        <!-- Status display (like old LED screen) -->
+        <div id="messageContainer" class="mb-8 retro-box p-4 hidden">
+            <div class="flex items-center">
+                <div class="w-4 h-4 rounded-full bg-var(--neon-pink) mr-2 pulse"></div>
+                <div id="statusMessage" class="font-mono"></div>
+            </div>
+        </div>
+        
+        <!-- Main grid with glowing borders -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Controls Panel (left) -->
+            <div class="retro-box p-6 relative pixel-corner">
+                <div class="retro-section-title">CONTROL PANEL</div>
+                
+                <!-- File Upload with custom style -->
+                <div class="mb-8">
+                    <label class="block text-lg mb-3 text-var(--neon-green)">UPLOAD IMAGE</label>
+                    <div class="file-upload">
+                        <input type="file" id="imageUpload" accept="image/*">
+                        <label for="imageUpload" class="file-upload-label">SELECT IMAGE FILE</label>
+                    </div>
+                    <div class="text-xs mt-2 text-var(--neon-blue)">SUPPORTED: JPG, PNG, GIF, WEBP</div>
+                </div>
+                
+                <!-- Processing Button -->
+                <div class="mb-8">
+                    <button id="removeBgBtn" class="retro-button w-full text-xl py-3">
+                        <span id="buttonText">REMOVE BACKGROUND</span>
+                        <span id="buttonLoader" class="loading hidden"></span>
+                    </button>
+                </div>
+                
+                <!-- Outline Settings -->
+                <div class="mb-8">
+                    <div class="retro-section-title">OUTLINE SETTINGS</div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm mb-2">WIDTH</label>
+                            <input type="range" id="borderWidth" min="0" max="20" value="0" class="retro-slider w-full">
+                            <div class="flex justify-between text-xs mt-1">
+                                <span>0</span>
+                                <span id="borderWidthValue">0</span>
+                                <span>20</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">COLOR</label>
+                            <input type="color" id="borderColor" value="#ff00cc" class="w-full h-10 cursor-pointer" style="border: 2px solid var(--neon-purple);">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Background Options -->
+                <div class="mb-8">
+                    <div class="retro-section-title">BACKGROUND OPTIONS</div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button class="bg-option retro-button text-sm px-3 py-2" data-bgtype="color" style="color: var(--neon-green); border-color: var(--neon-green);">COLOR</button>
+                        <button class="bg-option retro-button text-sm px-3 py-2" data-bgtype="blue" style="color: var(--neon-blue); border-color: var(--neon-blue);">BLUE</button>
+                        <button class="bg-option retro-button text-sm px-3 py-2" data-bgtype="gradient" style="color: var(--neon-purple); border-color: var(--neon-purple);">GRADIENT</button>
+                        <button class="bg-option retro-button text-sm px-3 py-2" data-bgtype="image" style="color: var(--neon-pink); border-color: var(--neon-pink);">IMAGE</button>
+                        <button class="bg-option retro-button text-sm px-3 py-2" data-bgtype="transparent" style="color: var(--matrix-green); border-color: var(--matrix-green);">TRANSPARENT</button>
+                    </div>
+                    
+                    <div id="bgColorPicker" class="flex items-center gap-4 mb-4">
+                        <input type="color" id="bgColor" value="#0d0221" class="h-10 w-12 cursor-pointer" style="border: 2px solid var(--neon-green);">
+                        <input type="text" id="bgColorHex" value="#0d0221" class="retro-input flex-1" placeholder="#HEXCODE">
+                    </div>
+                    
+                    <div id="bgGradientPicker" class="hidden grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm mb-2">START COLOR</label>
+                            <input type="color" id="bgGradientStart" value="#ff2a6d" class="w-full h-10 cursor-pointer" style="border: 2px solid var(--neon-purple);">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">END COLOR</label>
+                            <input type="color" id="bgGradientEnd" value="#05d9e8" class="w-full h-10 cursor-pointer" style="border: 2px solid var(--neon-blue);">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm mb-2">DIRECTION</label>
+                            <select id="gradientDirection" class="retro-select w-full">
+                                <option value="linear">LINEAR</option>
+                                <option value="radial">RADIAL</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="bgImagePicker" class="hidden">
+                        <div class="file-upload">
+                            <input type="file" id="bgImageUpload" accept="image/*">
+                            <label for="bgImageUpload" class="file-upload-label">SELECT BG IMAGE</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Retro Text Overlay -->
+                <div class="mb-8">
+                    <div class="retro-section-title">RETRO TEXT OVERLAY</div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" id="retroTextToggle" class="retro-checkbox mr-3">
+                            <span class="text-sm">ENABLE</span>
+                        </label>
+                        <input type="text" id="retroTextInput" value="RETRO!" class="retro-input flex-1" placeholder="YOUR TEXT" disabled>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm mb-2">FONT</label>
+                            <select id="retroFont" class="retro-select w-full" disabled>
+                                <option value="retro-press">PRESS START 2P</option>
+                                <option value="retro-orbitron">ORBITRON</option>
+                                <option value="retro-vt323">VT323</option>
+                                <option value="retro-monoton">MONOTON</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">COLOR</label>
+                            <input type="color" id="retroTextColor" value="#ff00cc" class="w-full h-10 cursor-pointer" style="border: 2px solid var(--neon-purple);" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm mb-2">SIZE</label>
+                            <input type="range" id="textSize" min="16" max="72" value="32" class="retro-slider w-full" disabled>
+                            <div class="flex justify-between text-xs mt-1">
+                                <span>16</span>
+                                <span id="textSizeValue">32</span>
+                                <span>72</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">SHADOW</label>
+                            <input type="range" id="textShadow" min="0" max="10" value="6" class="retro-slider w-full" disabled>
+                            <div class="flex justify-between text-xs mt-1">
+                                <span>0</span>
+                                <span id="textShadowValue">6</span>
+                                <span>10</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs mt-3 text-var(--neon-blue)">💡 DRAG TEXT ON PREVIEW TO REPOSITION</div>
+                </div>
+                
+                <!-- Download Button -->
+                <div>
+                    <button id="downloadBtn" class="retro-button w-full text-xl py-3" style="color: var(--neon-green); border-color: var(--neon-green);">
+                        DOWNLOAD IMAGE
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Preview Panel (right) -->
+            <div class="retro-box p-6 relative pixel-corner">
+                <div class="retro-section-title">IMAGE PREVIEW</div>
+                <div id="previewContainer" class="canvas-container pixel-grid">
+                    <div class="text-center text-var(--neon-purple) text-lg">
+                        
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer with fake copyright -->
+        <div class="text-center mt-12 text-xs text-var(--neon-purple) opacity-70">
+            <div>Developed by Yashraj Singh Solanki</div>
+            <div class="mt-1">ALL RIGHTS RESERVED</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
